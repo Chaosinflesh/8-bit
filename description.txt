@@ -1,0 +1,65 @@
+CPU Specification
+=================
+
+Registers:
+
+    0x0-E GENERAL PURPOSE
+    0xF $RETURN [Populated whenever an interrupt is triggered]
+
+    $TARGET is set programmatically with the SEL instruction
+
+
+Instruction Set:
+
+    0x0r    SEL $r  Select which register is $TARGET
+    0x1r    LDR $r  Load from the address in $r to $TARGET [*]
+    0x2r    STR $r  Store from $TARGET into the address in $r
+    0x3r    JR $r   Jump to the address in $r
+    0x4r    CP $r   Copy from $TARGET into $r [*]
+    0x5r    AND $r  AND $TARGET in place with $r
+    0x6r    OR $r   OR $TARGET in place with $r
+    0x7r    XOR $r  XOR $TARGET in place with $r
+    0x8r    ADD $r  Add $r to $TARGET
+    0x9r    SUB $r  Subtract $r from $TARGET
+    0xAr    MUL $r  Multiply $TARGET by $r
+    0xBr    DIV $r  Divide $TARGET by $r
+    0xCi    SHL %i  Shift left %i places
+    0xDi    SHR %i  Shift right %i places
+    0xEi    SSR %i  Signed shift right %i places
+    0xF0    LDN !d  Loads !d into $TARGET [*]
+    0xF1    STN !d  Stores $TARGET into the address !d
+    0xF2    J !d    Jump to the address !d
+    0xF3    JZ !d   Jump to the address !d, if $TARGET is ZERO
+    0xF4    JN !d   Jump to the address !d, if $TARGET is NEGATIVE
+    0xF5    JC !d   Jump to the address !d, if $TARGET had a CARRY
+    0xF6    JV !d   Jump to the address !d, if $TARGET had an OVERFLOW
+    0xF7    COM     Complement $TARGET
+    0xF8    NEG     2s complement $TARGET
+    0xF9    INC     Increment $TARGET
+    0xFA    DEC     Decrement $TARGET
+    0xFB    CLR     Set $TARGET to 0
+    0xFC    UNO     Set $TARGET to 1
+    0xFD    NOP     No operations
+    0xFE    RST     Reset
+    0xFF    HLT     Halt
+
+    Notes:
+        $r  4-bit register number
+        %i  4-bit unsigned integer
+        !d  4-byte data segment
+        [*] Clears CARRY and OVERFLOW flags on DESTINATION only
+
+MMIOs:
+
+    This CPU uses memory-mapping to provide access to external peripherals.
+    Possible MMIOs could include:
+    
+    - External peripherals, such as timers and IO hardware
+    - Communications channels to other devices
+    - Sensors
+    - SIMD extension hardware connections
+    - Hi-precision external FPU
+    - Random number generator
+    - Clock
+    - Security hardware (e.g. TPM)
+    - Communication channels to other CPUs
