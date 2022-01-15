@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/API/API.iml" filepath="$PROJECT_DIR$/API/API.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CPU/CPU.iml" filepath="$PROJECT_DIR$/CPU/CPU.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Compiler/Compiler.iml" filepath="$PROJECT_DIR$/Compiler/Compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FileIO/FileIO.iml" filepath="$PROJECT_DIR$/FileIO/FileIO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Timer/Timer.iml" filepath="$PROJECT_DIR$/Timer/Timer.iml" />
+    </modules>
+  </component>
+</project>
