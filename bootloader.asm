@@ -14,17 +14,19 @@ _0x05:
     HLT         ; This will be triggered by the interrupt.
 :start
     SEL 7
-    LDN %fw
-    LDR 7
+    LDN %fw     ; Loads the address of FileWriter address location.
+    LDR 7       ; Overwrite address location with the address.
     SEL 1
     LDN b
+    LDR 1
     CP  3
     SEL 2
     LDN a
+    LDR 2
     SEL 4
-    LDN r
+    LDN r       ; These are only included to test assembler behaviour.
     SEL 5
-    LDN s
+    LDN s       ; They are not used.
     SEL 0
     CLR
     ADD 1       ; 101
