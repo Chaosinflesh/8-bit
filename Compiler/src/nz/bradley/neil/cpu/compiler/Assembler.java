@@ -90,7 +90,7 @@ public class Assembler {
 
     private static void processData(String line) {
         String[] parts = line.split("\\s+", 3);
-        String symbol = parts[1];
+        String symbol = parts[1].replaceAll("[$%!]", "");
         byte[] value = null;
         ByteBuffer buffer;
 
@@ -101,7 +101,7 @@ public class Assembler {
             }
             case "raw" -> {
                 buffer = ByteBuffer.allocate(parts[2].length() / 2);
-                for (int i = 0; i < parts[2].length() / 2; i += 2) {
+                for (int i = 0; i < parts[2].length(); i += 2) {
                     buffer.put((byte)HexFormat.fromHexDigits(parts[2], i, i + 2));
                 }
                 value = buffer.array();
@@ -109,7 +109,7 @@ public class Assembler {
             case "text" -> value = parts[2].getBytes(StandardCharsets.UTF_8);
         }
 
-        if (symbol == null || value == null) {
+        if (value == null) {
             throw new RuntimeException("Invalid data type found at " + count + ": " + line);
         }
         if (symbols.containsKey(symbol)) {
@@ -142,6 +142,8 @@ public class Assembler {
         Instruction instruction = Instruction.valueOf(parts[0]);
         int param = 0;
         if (parts.length > 1) {
+            // Allow for readability, but ignore otherwise.
+            parts[1] = parts[1].replaceAll("[$%!]", "");
             if (Character.isDigit(parts[1].charAt(0))) {
                 param = Integer.parseInt(parts[1]);
             } else {
@@ -168,7 +170,15 @@ public class Assembler {
                 throw new RuntimeException("Symbol not found: " + symbol);
             }
             for (var reference: symbolReferences.get(symbol)) {
-                System.arraycopy(symbols.get(symbol), 0, bytes,reference, 4);
+                var pos = ByteBuffer.allocate(4).putInt(index).array();
+                var data = symbols.get(symbol);
+                // Might need to extend the array here.
+                if (index + data.length > bytes.length) {
+                    bytes = Arrays.copyOf(bytes, bytes.length * 2 + data.length);
+                }
+                System.arraycopy(data, 0, bytes, index, data.length);
+                System.arraycopy(pos, 0, bytes, reference, 4);
+                index += data.length;
             }
         }
     }
