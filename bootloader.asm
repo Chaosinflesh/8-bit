@@ -4,9 +4,9 @@
 ; All data is in hex.
 .int     a      7
 .int     b      65
-.int     fw     FC8
+.int     $fw     FC8
 .text    s      The remainder of this line is a string.
-.raw     r      68656B6B
+.raw     r      68656C6C6F
 
 :program
     J   start   ; Goto the start of the program.
@@ -14,12 +14,17 @@ _0x05:
     HLT         ; This will be triggered by the interrupt.
 :start
     SEL 7
-    LDN fw
+    LDN %fw
+    LDR 7
     SEL 1
     LDN b
     CP  3
     SEL 2
     LDN a
+    SEL 4
+    LDN r
+    SEL 5
+    LDN s
     SEL 0
     CLR
     ADD 1       ; 101

@@ -10,7 +10,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="API" />
     <orderEntry type="module" module-name="Timer" />
-    <orderEntry type="library" scope="TEST" name="JUnit5.7.0" level="project" />
     <orderEntry type="module" module-name="FileIO" />
+    <orderEntry type="library" name="junit.jupiter" level="project" />
   </component>
 </module>
