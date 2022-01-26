@@ -1,0 +1,125 @@
+Neil Bradley's Programming Language: scandi
+===========================================
+
+Having created my own CPU and assembler, I have been given the challenge
+of creating my own programming language to use on it. This file is my
+attempt at a language specification.
+
+OVERVIEW
+========
+
+Uses scandinavian maths (e.g. `$a 3 7 + 5 * =` makes $a equal 50)
+Variables prepended with $
+Functions are operands
+Stack prior to operand can be any size and may include other operands
+Scope is defined by indentation
+Lines terminated by either function or assignment at the end of a line
+(Variables | values at the end of a line carry over)
+Most operators etc. are provided by functions
+Variables disappear when all references go out of scope or are reassigned
+Functions and variables only have to be defined within scope, not prior to use
+Functions and variables within scopes cannot share names
+Raw data type is 32-bit binary
+Variables can have functions added as children via declaration in child scope
+Anything not specified can be defined [e.g. in stdlib.scandi]
+
+
+KEYWORD         DESCRIPTION
+=======         ===========
+
+global          specifies the following var or func is shared across all source
+                files
+
+with            specifies other source files to include in the same scope, when
+                referenced from this file
+
+
+FLOW CONTROL
+--------------------------------------------------------------------------------
+Labels are only valid within current and parent scope, up to enclosing function
+(can't jump out of a function).
+
+loc @<name>     label
+
+@<name>         go to label
+
+
+COMPARATORS (TWO PARAMETERS)
+--------------------------------------------------------------------------------
+If the conditional is true, executes the next statement, else the next statement
+at the same scope as the conditional statement
+
+?               shallow equality (only root value compared)
+?:              reference equality
+>               greater than
+<               less than
+?>              greater than or equal
+<?              less than or equal
+
+
+VARIABLES
+--------------------------------------------------------------------------------
+_<address>              memory address
+
+var $name               Defines a variable. All variables are table-based
+                        objects. variables are restricted to their scope.
+
+$name.<child>           Child objects are referenced by name or index. At the
+                        first instance in a chain an object doesn't exist, null
+                        is returned. If referenced without $, must be a
+                        function.
+
+$name!children          Gets all direct variable children of the variable.
+
+$name!count             Get how many variable children there are for the
+                        variable.
+
+
+DATA FORMATS
+--------------------------------------------------------------------------------
+32-bit                  value, in hexadecimal
+
+"text"                  String within quotes
+
+blob                    raw contiguous hexadecimal data
+
+
+FUNCTIONS
+--------------------------------------------------------------------------------
+func [$param ...] name  Define a function. Parameter names are allocated to
+                        provided parameters in order defined.
+
+.<param>                References a parameter
+
+!children               Gets all parameters of the function
+
+!count                  Get how many parameters were passed into the function.
+
+name [var ...] [=:]     return assignment, with either copy or reference
+
+[var ...] name          Calls the specified function, with the stack
+
+
+OPERATORS (ONE PARAMETER, PREFIX)
+--------------------------------------------------------------------------------
+~               complement
+-               negative
+
+
+OPERATORS (TWO PARAMETERS)
+--------------------------------------------------------------------------------
+=               Copy Assignment [full variable, including functions]
+:               Reference Assignment
+&               and
+|               or
+^               xor
++               addition
+-               subtraction
+*               multiply
+/               divide
+%               modulus
+<-              shift left
+->              shift right
+>>              signed shift right
+
+
