@@ -1,4 +1,4 @@
-package nz.bradley.neil.cpu.compiler;
+package nz.bradley.neil.cpu.assembler;
 
 import nz.bradley.neil.cpu.api.Instruction;
 import nz.bradley.neil.cpu.api.InstructionException;
